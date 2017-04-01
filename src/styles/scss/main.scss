@@ -1,0 +1,107 @@
+
+.titled-value {
+  display: inline-block;
+  text-align: center;
+  width: 128px;
+  float: left;
+  padding: 4px;
+  &:hover {
+    background: #eee;
+  }
+  .title {
+    font-size: 14px;
+  }
+  .value {
+    &.overflow {
+      color: #ff5656;
+    }
+    font-size: 28px;
+  }
+}
+
+.progress-bar {
+  display: inline-block;
+  width: 100px;
+  height: 10px;
+  .value {
+    height: 100%;
+    background: #73b9ff;
+  }
+  border: 1px #b0b0b8 solid;
+  background: white;
+}
+
+.dashboard {
+  .total {
+    height: 70px;
+    .big-progress {
+      width: 300px;
+      height: 30px;
+    }
+  }
+  .members {
+    max-width: 800px;
+    .member-issues {
+      &:first-child {
+        border-top: 1px #cccccc solid;
+      }
+      .member, .issue {
+        border-bottom: 1px #cccccc solid;
+        &:hover {
+          background: #eee;
+        }
+      }
+      .member {
+        padding: 4px;
+        > * {
+          display: inline-block;
+          vertical-align: middle;
+          margin-left: 8px;
+        }
+        .avatar {
+          width: 24px;
+          height: 24px;
+          margin: 4px;
+        }
+        .name {
+          width: 300px;
+        }
+        .spentHours {
+          width: 36px;
+        }
+        .small-progress {
+          width: 200px;
+          height: 20px;
+        }
+        .capacity {
+          width: 36px;
+        }
+        .estimateHours {
+          width: 36px;
+        }
+        .expander {
+          font-family: monospace;
+          font-size: 26px;
+          cursor: pointer;
+          margin-top: -4px;
+          user-select: none;
+        }
+      }
+      .issue {
+        > * {
+          display: inline-block;
+          margin-left: 16px;
+        }
+        .link {
+          width: 30px;
+        }
+        .title {
+          width: 340px;
+        }
+        .progress {
+        }
+      }
+    }
+  }
+}
+
