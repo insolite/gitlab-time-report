@@ -1,12 +1,14 @@
+import { GITLAB_URL, PRIVATE_TOKEN } from './config';
 
-const getHours = (seconds) => seconds / 3600;
 
-const formatHours = (hours) => hours.toFixed(1);
+export const getHours = (seconds) => seconds / 3600;
 
-const filterIssues = (issues, filters) => {
+export const formatHours = (hours) => hours ? hours.toFixed(1) : '-';
+
+export const filterIssues = (issues, filters) => {
     return issues.filter((issue) => {
         if (filters) {
-            if (filters.member && issue.assigneeId != filters.member.id) {
+            if (filters.member && (!issue.assignee || issue.assignee.id != filters.member.id)) {
                 return false;
             }
         }
@@ -14,8 +16,10 @@ const filterIssues = (issues, filters) => {
     });
 };
 
-const sumSpentHours = (issues) => getHours(issues.map((issue) => issue.time.total_time_spent).reduce((a, b) => a + b, 0));
+// TODO: 0 -> None
+// times[issue.id] ? times[issue.id].total_time_spent : 0
+export const sumSpentHours = (issues, times) => getHours(issues.map((issue) => times[issue.id] ? times[issue.id].total_time_spent : 0).reduce((a, b) => a + b, 0));
 
-const sumEstimateHours = (issues) => getHours(issues.map((issue) => issue.time.time_estimate).reduce((a, b) => a + b, 0));
+export const sumEstimateHours = (issues, times) => getHours(issues.map((issue) => times[issue.id] ? times[issue.id].time_estimate : 0).reduce((a, b) => a + b, 0));
 
-export { getHours, formatHours, filterIssues, sumSpentHours, sumEstimateHours };
+export const getGitlabUrl = (path, queryStr) => `${GITLAB_URL}/api/v4${path}?private_token=${PRIVATE_TOKEN}&${queryStr}`;

@@ -16,7 +16,7 @@ Setup development environment
     .. code-block:: bash
 
         npm i
-        gulp build
+        gulp sass
         npm start
 
 

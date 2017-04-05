@@ -12,9 +12,12 @@ class Dashboard extends React.Component {
             <div className="dashboard">
                 <div className="total">
                     <TitledValue title="Total Hours" value={formatHours(this.props.spentHours)}/>
-                    <TitledValue title="Total Capacity" value={formatHours(this.props.totalCapacity)}/>
                     <TitledValue title="Total Estimate" value={formatHours(this.props.estimateHours)} max={this.props.totalCapacity}/>
+                    <TitledValue title="Total Capacity" value={formatHours(this.props.totalCapacity)}/>
                     <TimeProgressBar current={this.props.spentHours} max={this.props.totalCapacity} className="big-progress"/>
+                </div>
+                <div className="toolbar">
+                    <a href="#" className="refresh" onClick={this.props.onRefreshClick}>Refresh</a>
                 </div>
                 <div className="members">
                     {this.props.members.map((member) =>

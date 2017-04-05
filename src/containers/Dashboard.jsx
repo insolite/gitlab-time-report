@@ -2,25 +2,32 @@ import { connect } from 'react-redux';
 
 import Dashboard from '../components/Dashboard';
 import { filterIssues, sumSpentHours, sumEstimateHours } from '../utils';
+import { fetchIssues } from '../actions/issue';
+import { fetchIssueTime } from '../actions/issueTime';
+import { fetchMembers } from '../actions/member';
 
 
 const mapStateToProps = (state) => {
     let issues = filterIssues(state.issues, state.filters);
     return {
-        issues: issues,
         members: state.members,
-        spentHours: sumSpentHours(issues),
-        estimateHours: sumEstimateHours(issues),
+        spentHours: sumSpentHours(issues, state.issueTimes),
+        estimateHours: sumEstimateHours(issues, state.issueTimes),
         totalCapacity: 130
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    // onTodoClick: (id) => {
-    //   dispatch(toggleTodo(id))
-    // }
-  }
+    return {
+        onRefreshClick: () => {
+            dispatch(fetchIssues()).then((action) => {
+                action.payload.map((issue) => {
+                    dispatch(fetchIssueTime(issue.project_id, issue.id));
+                });
+            });
+            dispatch(fetchMembers());
+        },
+    }
 };
 
 export default connect(
