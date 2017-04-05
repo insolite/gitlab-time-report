@@ -2,7 +2,6 @@ import { connect } from 'react-redux';
 
 import Member from '../components/Member';
 import { filterIssues, sumSpentHours, sumEstimateHours } from '../utils';
-import { toggleExpand } from '../actions/member';
 
 
 const mapStateToProps = (state, props) => {
@@ -17,9 +16,6 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onExpandClick: (id) => {
-            dispatch(toggleExpand(id))
-        },
     }
 };
 

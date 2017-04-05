@@ -7,6 +7,14 @@ import { formatHours } from '../utils';
 
 
 class Member extends React.Component {
+    constructor() {
+        super();
+
+        this.state = {
+            expand: true,
+        };
+    }
+
     render() {
         return (
             <div className="member-issues">
@@ -17,10 +25,10 @@ class Member extends React.Component {
                     <div className="estimateHours">{formatHours(this.props.estimateHours)}</div>
                     <div className="capacity">{formatHours(this.props.capacity)}</div>
                     <TimeProgressBar current={this.props.spentHours} max={this.props.capacity} className="small-progress"/>
-                    <Expander onClick={() => this.props.onExpandClick(this.props.member.id)} expanded={this.props.member.expand}/>
+                    <Expander onClick={() => this.setState({expand: !this.state.expand})} expanded={this.state.expand}/>
                 </div>
                 <div>
-                    {this.props.member.expand ? this.props.issues.map((issue) => <Issue issue={issue}/>) : []}
+                    {this.state.expand ? this.props.issues.map((issue) => <Issue issue={issue}/>) : []}
                 </div>
             </div>
         );

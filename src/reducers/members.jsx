@@ -1,4 +1,4 @@
-import { MEMBERS_RECEIVE, TOGGLE_EXPAND } from '../actions/member';
+import { MEMBERS_RECEIVE } from '../actions/member';
 
 
 let initialState = [
@@ -21,8 +21,6 @@ let initialState = [
 export default function members (state=initialState, action) {
     if (action.type == MEMBERS_RECEIVE) {
         return action.payload;
-    } else if (action.type == TOGGLE_EXPAND) {
-        return state.map((member) => Object.assign({}, member, {expand: member.id == action.id ? !member.expand : member.expand}));
     }
     return state;
 };
