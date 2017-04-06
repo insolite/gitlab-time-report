@@ -12,11 +12,11 @@ const avatarFormatter = (cell, row) => {
     return <img src={row.avatar_url} className="avatar"/>;
 };
 
-const progressFormatter = (cell, row) => {
+const memberProgressFormatter = (cell, row) => {
     return <TimeProgressBar current={row.spentHours} max={row.capacity} className="member-progress"/>;
 };
 
-const progressFormatter2 = (cell, row) => {
+const issueProgressFormatter = (cell, row) => {
     return <TimeProgressBar current={row.spentHours} max={row.estimateHours} className="issue-progress"/>;
 };
 
@@ -32,7 +32,7 @@ class MemberTable extends React.Component {
                 <TableHeaderColumn dataField='estimateHours' width={this.props.numberWidth}>Estimate</TableHeaderColumn>
                 <TableHeaderColumn dataField='capacity' width={this.props.numberWidth}>Capacity</TableHeaderColumn>
                 <TableHeaderColumn dataField='count' width={this.props.numberWidth}>Count</TableHeaderColumn>
-                <TableHeaderColumn dataFormat={ progressFormatter2 }>Progress</TableHeaderColumn>
+                <TableHeaderColumn dataFormat={ issueProgressFormatter }>Progress</TableHeaderColumn>
             </BootstrapTable>
         );
     }
@@ -52,7 +52,7 @@ class MemberTable extends React.Component {
                     <TableHeaderColumn dataField='estimateHours' width={this.props.numberWidth}>Estimate</TableHeaderColumn>
                     <TableHeaderColumn dataField='capacity' width={this.props.numberWidth}>Capacity</TableHeaderColumn>
                     <TableHeaderColumn dataField='count' width={this.props.numberWidth}>Count</TableHeaderColumn>
-                    <TableHeaderColumn dataFormat={ progressFormatter }>Progress</TableHeaderColumn>
+                    <TableHeaderColumn dataFormat={ memberProgressFormatter }>Progress</TableHeaderColumn>
                 </BootstrapTable>
             </div>
         );

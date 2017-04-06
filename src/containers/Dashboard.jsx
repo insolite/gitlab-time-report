@@ -5,12 +5,14 @@ import { filterIssues, sumSpentHours, sumEstimateHours } from '../utils';
 import { fetchIssues } from '../actions/issue';
 import { fetchIssueTime } from '../actions/issueTime';
 import { fetchMembers } from '../actions/member';
+import { fetchMilestones } from '../actions/milestone';
 
 
 const mapStateToProps = (state) => {
     let issues = filterIssues(state.issues, state.filters);
     return {
         members: state.members,
+        milestones: state.milestones,
         spentHours: sumSpentHours(issues, state.issueTimes),
         estimateHours: sumEstimateHours(issues, state.issueTimes),
         totalCapacity: 130
@@ -26,6 +28,7 @@ const mapDispatchToProps = (dispatch) => {
                 });
             });
             dispatch(fetchMembers());
+            dispatch(fetchMilestones());
         },
     }
 };

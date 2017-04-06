@@ -25,8 +25,8 @@ class Dashboard extends React.Component {
                 </div>
                 <div className="toolbar">
                     <a href="#" className="refresh" onClick={this.props.refresh}>Refresh</a>
+                    {this.props.milestones.map((milestone) => <div>{milestone.title}</div>)}
                 </div>
-
                 <div className="members">
                     <MemberTable numberWidth="40"/>
                 </div>

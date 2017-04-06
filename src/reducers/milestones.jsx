@@ -1,15 +1,11 @@
+import { MILESTONE_RECEIVE } from '../actions/milestone';
 
-let initialState = [
-    {
-        id: 1,
-        name: 'v0.1'
-    },
-    {
-        id: 2,
-        name: 'v0.2'
-    }
-];
+
+let initialState = [];
 
 export default function milestones (state=initialState, action) {
+    if (action.type == MILESTONE_RECEIVE) {
+        return action.payload;
+    }
     return state;
 };
