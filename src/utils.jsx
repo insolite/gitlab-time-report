@@ -11,6 +11,9 @@ export const filterIssues = (issues, filters) => {
             if (filters.member && (!issue.assignee || issue.assignee.id != filters.member.id)) {
                 return false;
             }
+            if ((filters.projects || []).length && filters.projects.indexOf(issue.project_id) < 0) {
+                return false;
+            }
         }
         return true;
     });

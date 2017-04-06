@@ -38,6 +38,7 @@
 }
 
 .dashboard {
+  max-width: 800px;
   .total {
     height: 70px;
     .big-progress {
@@ -51,7 +52,6 @@
     }
   }
   .members {
-    max-width: 800px;
     .table {
       border-collapse: collapse;
       td {
@@ -90,7 +90,7 @@
           }
           .issue-progress {
             width: 164px;
-            margin-left: 33px;
+            margin-left: 35px;
           }
         }
       }

@@ -27,7 +27,7 @@ class MemberTable extends React.Component {
             <BootstrapTable data={row.issues}
                             trClassName="issue">
                 <TableHeaderColumn dataField='id' dataFormat={ issueLinkFormatter } isKey>ID</TableHeaderColumn>
-                <TableHeaderColumn dataField='title' width="374">Title</TableHeaderColumn>
+                <TableHeaderColumn dataField='title' width="367">Title</TableHeaderColumn>
                 <TableHeaderColumn dataField='spentHours' width={this.props.numberWidth}>Spent</TableHeaderColumn>
                 <TableHeaderColumn dataField='estimateHours' width={this.props.numberWidth}>Estimate</TableHeaderColumn>
                 <TableHeaderColumn dataField='capacity' width={this.props.numberWidth}>Capacity</TableHeaderColumn>
@@ -46,12 +46,12 @@ class MemberTable extends React.Component {
                                 expandableRow={() => true}
                                 options={{expanding: this.props.data.map((member) => member.name)}}
                                 search>
-                    <TableHeaderColumn dataFormat={ avatarFormatter }>Img</TableHeaderColumn>
-                    <TableHeaderColumn dataField='name' width="400" isKey>Name</TableHeaderColumn>
-                    <TableHeaderColumn dataField='spentHours' width={this.props.numberWidth}>Spent</TableHeaderColumn>
-                    <TableHeaderColumn dataField='estimateHours' width={this.props.numberWidth}>Estimate</TableHeaderColumn>
-                    <TableHeaderColumn dataField='capacity' width={this.props.numberWidth}>Capacity</TableHeaderColumn>
-                    <TableHeaderColumn dataField='count' width={this.props.numberWidth}>Count</TableHeaderColumn>
+                    <TableHeaderColumn dataFormat={ avatarFormatter } width="35">I</TableHeaderColumn>
+                    <TableHeaderColumn dataField='name' width="380" dataSort isKey>Name</TableHeaderColumn>
+                    <TableHeaderColumn dataField='spentHours' width={this.props.numberWidth} dataSort>S</TableHeaderColumn>
+                    <TableHeaderColumn dataField='estimateHours' width={this.props.numberWidth} dataSort>E</TableHeaderColumn>
+                    <TableHeaderColumn dataField='capacity' width={this.props.numberWidth} dataSort>C</TableHeaderColumn>
+                    <TableHeaderColumn dataField='count' width={this.props.numberWidth} dataSort>N</TableHeaderColumn>
                     <TableHeaderColumn dataFormat={ memberProgressFormatter }>Progress</TableHeaderColumn>
                 </BootstrapTable>
             </div>

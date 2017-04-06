@@ -6,6 +6,7 @@ import members from './members';
 import filters from './filters';
 import labels from './labels';
 import milestones from './milestones';
+import projects from './projects';
 
 
 let mainReducer = combineReducers({
@@ -14,7 +15,8 @@ let mainReducer = combineReducers({
     members,
     filters,
     labels,
-    milestones
+    milestones,
+    projects
 });
 
 export default mainReducer;
