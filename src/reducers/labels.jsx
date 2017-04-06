@@ -1,14 +1,5 @@
 
-let initialState = [
-    {
-        id: 1,
-        name: 'develop'
-    },
-    {
-        id: 2,
-        name: 'bug'
-    }
-];
+let initialState = [];
 
 export default function labels (state=initialState, action) {
     return state;

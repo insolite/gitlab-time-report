@@ -1,12 +1,19 @@
 import React from 'react';
+import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
 import TitledValue from './TitledValue';
 import TimeProgressBar from './TimeProgressBar';
-import Member from '../containers/Member';
+import MemberTable from '../containers/MemberTable';
 import { formatHours } from '../utils';
 
 
 class Dashboard extends React.Component {
+    constructor(props) {
+        super(props);
+
+        props.refresh();
+    }
+
     render() {
         return (
             <div className="dashboard">
@@ -17,12 +24,11 @@ class Dashboard extends React.Component {
                     <TimeProgressBar current={this.props.spentHours} max={this.props.totalCapacity} className="big-progress"/>
                 </div>
                 <div className="toolbar">
-                    <a href="#" className="refresh" onClick={this.props.onRefreshClick}>Refresh</a>
+                    <a href="#" className="refresh" onClick={this.props.refresh}>Refresh</a>
                 </div>
+
                 <div className="members">
-                    {this.props.members.map((member) =>
-                        <Member className="member" member={member}/>
-                    )}
+                    <MemberTable numberWidth="40"/>
                 </div>
             </div>
         );

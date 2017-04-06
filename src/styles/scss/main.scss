@@ -31,12 +31,19 @@
   background: white;
 }
 
+.issue, .member {
+  > .spentHours, .estimateHours, .capacity {
+    width: 30px;
+  }
+}
+
 .dashboard {
   .total {
     height: 70px;
     .big-progress {
       width: 300px;
       height: 30px;
+      margin: 16px 0 0 46px;
     }
   }
   .toolbar {
@@ -45,64 +52,46 @@
   }
   .members {
     max-width: 800px;
-    .member-issues {
-      &:first-child {
-        border-top: 1px #cccccc solid;
+    .table {
+      border-collapse: collapse;
+      td {
+        outline: none;
       }
       .member, .issue {
+        &:first-child {
+          border-top: 1px #cccccc solid;
+        }
         border-bottom: 1px #cccccc solid;
         &:hover {
           background: #eee;
         }
       }
       .member {
-        padding: 4px;
-        > * {
-          display: inline-block;
-          vertical-align: middle;
-          margin-left: 8px;
+        font-size: 18px;
+        .table-header-wrapper {
+          display: none;
         }
         .avatar {
           width: 24px;
           height: 24px;
-          margin: 4px;
+          margin: 4px 4px 0 4px;
         }
-        .name {
-          width: 300px;
-        }
-        .spentHours {
-          width: 36px;
-        }
-        .small-progress {
+        .member-progress {
           width: 200px;
           height: 20px;
+          margin: 4px 16px 0 0;
         }
-        .capacity {
-          width: 36px;
-        }
-        .estimateHours {
-          width: 36px;
-        }
-        .expander {
-          font-family: monospace;
-          font-size: 26px;
-          cursor: pointer;
-          margin-top: -4px;
-          user-select: none;
-        }
-      }
-      .issue {
-        > * {
-          display: inline-block;
-          margin-left: 16px;
-        }
-        .link {
-          width: 30px;
-        }
-        .title {
-          width: 340px;
-        }
-        .progress {
+        .issue {
+          font-size: 16px;
+          .link {
+            width: 46px;
+            text-align: right;
+            display: block;
+          }
+          .issue-progress {
+            width: 164px;
+            margin-left: 33px;
+          }
         }
       }
     }

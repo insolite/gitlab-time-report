@@ -19,7 +19,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onRefreshClick: () => {
+        refresh: () => {
             dispatch(fetchIssues()).then((action) => {
                 action.payload.map((issue) => {
                     dispatch(fetchIssueTime(issue.project_id, issue.id));
