@@ -8,10 +8,13 @@ export const formatHours = (hours) => hours ? hours.toFixed(1) : '-';
 export const filterIssues = (issues, filters) => {
     return issues.filter((issue) => {
         if (filters) {
-            if (filters.member && (!issue.assignee || issue.assignee.id != filters.member.id)) {
+            if ((filters.members || []).length && (!issue.assignee || filters.members.indexOf(issue.assignee.id) < 0)) {
                 return false;
             }
             if ((filters.projects || []).length && filters.projects.indexOf(issue.project_id) < 0) {
+                return false;
+            }
+            if ((filters.milestones || []).length && (!issue.milestone || filters.milestones.indexOf(issue.milestone.id) < 0)) {
                 return false;
             }
         }
@@ -25,4 +28,4 @@ export const sumSpentHours = (issues, times) => getHours(issues.map((issue) => t
 
 export const sumEstimateHours = (issues, times) => getHours(issues.map((issue) => times[issue.id] ? times[issue.id].time_estimate : 0).reduce((a, b) => a + b, 0));
 
-export const getGitlabUrl = (path, queryStr) => `${GITLAB_URL}/api/v4${path}?private_token=${PRIVATE_TOKEN}&${queryStr}`;
+export const getGitlabUrl = (path, queryStr) => `${GITLAB_URL}/api/v4${path}?private_token=${PRIVATE_TOKEN}` + (queryStr ? `&${queryStr}` : '');

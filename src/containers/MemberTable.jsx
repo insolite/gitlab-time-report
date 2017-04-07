@@ -9,7 +9,7 @@ const mapStateToProps = (state, props) => {
         data,
         members = {};
     state.members.map((member) => {
-        let memberIssues = filterIssues(issues, {member: member});
+        let memberIssues = filterIssues(issues, {members: [member.id]});
         members[member.id] = Object.assign({}, member, {
             issues: memberIssues.map((issue) => Object.assign({}, issue, {
                 spentHours: sumSpentHours([issue], state.issueTimes),

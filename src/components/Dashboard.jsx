@@ -17,11 +17,20 @@ class Dashboard extends React.Component {
         props.refresh();
     }
 
-    flattenMilestones() {
+    getProjectOptions() {
+        return this.props.projects.map((project) => {return {value: project.id, label: project.name}});
+    }
+
+    getMilestoneOptions() {
         return [].concat.apply([], Object.values(this.props.milestones).map((milestones) =>
-            milestones.map((milestone) => {
-                // TODO: add project name
-                return {value: milestone.id, label: milestone.title}
+            milestones
+            .filter(milestone => (
+                !this.props.filters ||
+                !(this.props.filters.projects || []).length ||
+                (this.props.filters.projects || []).indexOf(milestone.project_id) >= 0))
+            .map((milestone) => {
+                let projectName = this.props.projects.filter((project) => project.id == milestone.project_id)[0].name;
+                return {value: milestone.id, label: `${projectName} - ${milestone.title}`}
             })
         ));
     }
@@ -41,14 +50,14 @@ class Dashboard extends React.Component {
                     Projects
                     <Select
                       value={this.props.filters.projects}
-                      options={this.props.projects.map((project) => {return {value: project.id, label: project.name}})}
+                      options={this.getProjectOptions()}
                       multi={true}
                       onChange={this.props.filterProjects}
                     />
                     Milestones
                     <Select
                       value={this.props.filters.milestones}
-                      options={this.flattenMilestones()}
+                      options={this.getMilestoneOptions()}
                       multi={true}
                       onChange={this.props.filterMilestones}
                     />
