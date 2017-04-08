@@ -3,7 +3,7 @@ import { GITLAB_URL, PRIVATE_TOKEN } from './config';
 
 export const getHours = (seconds) => seconds / 3600;
 
-export const formatHours = (hours) => hours ? hours.toFixed(1) : '-';
+export const formatHours = (hours) => hours !== undefined ? hours.toFixed(1) : '-';
 
 export const filterIssues = (issues, filters) => {
     return issues.filter((issue) => {

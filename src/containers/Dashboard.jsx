@@ -27,7 +27,15 @@ const mapStateToProps = (state) => {
     }
 };
 
-const getValues = (items) => items.map(item => item.value);
+const getFilters = items => {
+    let filters = {};
+    Object.entries(items).map((keyval) => {
+        let key = keyval[0],
+            val = keyval[1];
+        filters[key] = (val || []).length ? val.map(item => item.value) : undefined;
+    });
+    return filters;
+};
 
 const mapDispatchToProps = (dispatch) => {
     return {
@@ -45,13 +53,13 @@ const mapDispatchToProps = (dispatch) => {
             });
         },
         filterProjects: (projects) => {
-            dispatch(setFilters({projects: getValues(projects)}));
+            dispatch(setFilters(getFilters({projects})));
         },
         filterMilestones: (milestones) => {
-            dispatch(setFilters({milestones: getValues(milestones)}));
+            dispatch(setFilters(getFilters({milestones})));
         },
         filterMembers: (members) => {
-            dispatch(setFilters({members: getValues(members)}));
+            dispatch(setFilters(getFilters({members})));
         }
     }
 };

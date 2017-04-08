@@ -1,7 +1,7 @@
 import { SET_FILTERS } from '../actions/filters';
 
 
-let initialState = JSON.parse(location.hash.slice(1));
+let initialState = JSON.parse(location.hash.slice(1) || JSON.stringify({}));
 
 export default function filters (state=initialState, action) {
     let newState;
