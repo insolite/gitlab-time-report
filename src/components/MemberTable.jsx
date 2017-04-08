@@ -1,7 +1,7 @@
 import React from 'react';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
-import TimeProgressBar from './TimeProgressBar';
+import ProgressBar from './ProgressBar';
 
 
 const issueLinkFormatter = (cell, row) => {
@@ -13,11 +13,14 @@ const avatarFormatter = (cell, row) => {
 };
 
 const memberProgressFormatter = (cell, row) => {
-    return <TimeProgressBar current={row.spentHours} max={row.capacity} className="member-progress"/>;
+    return <ProgressBar lines={[
+        {current: row.spentHours, max: row.capacity},
+        {current: row.estimateHours, max: row.capacity, className: 'progress-value-second'},
+    ]} className="member-progress"/>;
 };
 
 const issueProgressFormatter = (cell, row) => {
-    return <TimeProgressBar current={row.spentHours} max={row.estimateHours} className="issue-progress"/>;
+    return <ProgressBar lines={{current: row.spentHours, max: row.estimateHours}} className="issue-progress"/>;
 };
 
 class MemberTable extends React.Component {

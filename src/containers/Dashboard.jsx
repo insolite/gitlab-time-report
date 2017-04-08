@@ -30,7 +30,7 @@ const mapDispatchToProps = (dispatch) => {
         refresh: () => {
             dispatch(fetchIssues()).then((action) => {
                 action.payload.map((issue) => {
-                    dispatch(fetchIssueTime(issue.project_id, issue.id));
+                    dispatch(fetchIssueTime(issue.project_id, issue.iid));
                 });
             });
             dispatch(fetchMembers());

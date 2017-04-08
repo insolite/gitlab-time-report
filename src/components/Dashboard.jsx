@@ -5,7 +5,7 @@ import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 
 import TitledValue from './TitledValue';
-import TimeProgressBar from './TimeProgressBar';
+import ProgressBar from './ProgressBar';
 import MemberTable from '../containers/MemberTable';
 import { formatHours } from '../utils';
 
@@ -42,7 +42,10 @@ class Dashboard extends React.Component {
                     <TitledValue title="Total Hours" value={formatHours(this.props.spentHours)}/>
                     <TitledValue title="Total Estimate" value={formatHours(this.props.estimateHours)} max={this.props.totalCapacity}/>
                     <TitledValue title="Total Capacity" value={formatHours(this.props.totalCapacity)}/>
-                    <TimeProgressBar current={this.props.spentHours} max={this.props.totalCapacity} className="big-progress"/>
+                    <ProgressBar lines={[
+                        {current: this.props.spentHours, max: this.props.totalCapacity},
+                        {current: this.props.estimateHours, max: this.props.totalCapacity, className: 'progress-value-second'},
+                    ]} className="big-progress"/>
                 </div>
                 <div className="toolbar">
                     <a href="#" className="refresh" onClick={this.props.refresh}>Refresh</a>
