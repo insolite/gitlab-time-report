@@ -1,16 +1,9 @@
 
-export const SET_PROJECT_FILTER = 'SET_PROJECT_FILTER';
-export function setProjectFilter(projects) {
+export const SET_FILTERS = 'SET_FILTERS';
+export function setFilters(filters, merge=true) {
   return {
-    type: SET_PROJECT_FILTER,
-    projects
-  }
-}
-
-export const SET_MILESTONE_FILTER = 'SET_MILESTONE_FILTER';
-export function setMilestoneFilter(milestones) {
-  return {
-    type: SET_MILESTONE_FILTER,
-    milestones
+    type: SET_FILTERS,
+    filters,
+    merge
   }
 }

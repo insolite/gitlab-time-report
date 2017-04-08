@@ -7,19 +7,23 @@ import { fetchIssueTime } from '../actions/issueTime';
 import { fetchMembers } from '../actions/member';
 import { fetchMilestones } from '../actions/milestone';
 import { fetchProjects } from '../actions/project';
-import { setProjectFilter, setMilestoneFilter } from '../actions/filters';
+import { setFilters } from '../actions/filters';
 
 
 const mapStateToProps = (state) => {
-    let issues = filterIssues(state.issues, state.filters);
+    let issues = filterIssues(state.issues, state.filters),
+        allMembers = state.members,
+        members = allMembers.filter(member => !state.filters || !(state.filters.members || []).length || state.filters.members.indexOf(member.id) >= 0);
     return {
-        members: state.members,
+        issues,
+        allMembers,
+        members,
         milestones: state.milestones,
         projects: state.projects,
         filters: state.filters,
         spentHours: sumSpentHours(issues, state.issueTimes),
         estimateHours: sumEstimateHours(issues, state.issueTimes),
-        totalCapacity: 130
+        totalCapacity: members.map(member => member.capacity).reduce((a, b) => a + b, 0)
     }
 };
 
@@ -41,10 +45,13 @@ const mapDispatchToProps = (dispatch) => {
             });
         },
         filterProjects: (projects) => {
-            dispatch(setProjectFilter(getValues(projects)));
+            dispatch(setFilters({projects: getValues(projects)}));
         },
         filterMilestones: (milestones) => {
-            dispatch(setMilestoneFilter(getValues(milestones)));
+            dispatch(setFilters({milestones: getValues(milestones)}));
+        },
+        filterMembers: (members) => {
+            dispatch(setFilters({members: getValues(members)}));
         }
     }
 };

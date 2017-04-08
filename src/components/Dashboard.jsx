@@ -35,6 +35,10 @@ class Dashboard extends React.Component {
         ));
     }
 
+    getMemberOptions() {
+        return this.props.allMembers.map((member) => {return {value: member.id, label: member.name}});
+    }
+
     render() {
         return (
             <div className="dashboard">
@@ -64,9 +68,16 @@ class Dashboard extends React.Component {
                       multi={true}
                       onChange={this.props.filterMilestones}
                     />
+                    Members
+                    <Select
+                      value={this.props.filters.members}
+                      options={this.getMemberOptions()}
+                      multi={true}
+                      onChange={this.props.filterMembers}
+                    />
                 </div>
                 <div className="members">
-                    <MemberTable numberWidth="40"/>
+                    <MemberTable numberWidth="40" members={this.props.members} issues={this.props.issues}/>
                 </div>
             </div>
         );

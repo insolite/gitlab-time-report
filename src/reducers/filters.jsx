@@ -1,13 +1,19 @@
-import { SET_PROJECT_FILTER, SET_MILESTONE_FILTER } from '../actions/filters';
+import { SET_FILTERS } from '../actions/filters';
 
 
-let initialState = {projects: []};
+let initialState = JSON.parse(location.hash.slice(1));
 
 export default function filters (state=initialState, action) {
-    if (action.type == SET_PROJECT_FILTER) {
-        return {...state, projects: action.projects};
-    } else if (action.type == SET_MILESTONE_FILTER) {
-        return {...state, milestones: action.milestones};
+    let newState;
+    if (action.type == SET_FILTERS) {
+        if (action.merge) {
+            newState = {...state, ...action.filters};
+        } else {
+            newState = action.filters;
+        }
+    } else {
+        newState = state;
     }
-    return state;
+    location.hash = JSON.stringify(newState);
+    return newState;
 };
