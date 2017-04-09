@@ -5,7 +5,7 @@ class ProgressBar extends React.Component {
     render() {
         let lines = Array.isArray(this.props.lines) ? this.props.lines : [this.props.lines],
             defaultHeight = 1,
-            totalHeight = lines.map(line => line.height || defaultHeight).reduce((rest, height) => rest + height, 0);
+            totalHeight = lines.map(line => line.height || defaultHeight).reduce((a, b) => a + b, 0);
         return (
             <div className={['progress-bar', this.props.className].join(' ')}>
                 {lines.map((line) =>

@@ -14,7 +14,23 @@ class Dashboard extends React.Component {
     constructor(props) {
         super(props);
 
-        props.refresh();
+        this.state = {
+            refreshing: true,
+        };
+
+        this.refreshClick(props, false);
+    }
+
+    refreshClick(props, initIcon=true) {
+        if (initIcon) {
+            this.setState({
+                refreshing: true
+            });
+        }
+        let promises = props.refresh();
+        Promise.all(promises).then(() => this.setState({
+            refreshing: false
+        }));
     }
 
     getProjectOptions() {
@@ -40,6 +56,9 @@ class Dashboard extends React.Component {
     }
 
     render() {
+        let now = Date.now(),
+            min = new Date('2017-04-05T00:00:00').getTime(),
+            max = new Date('2017-04-12T00:00:00').getTime(); // FIXME: get from milestones
         return (
             <div className="dashboard">
                 <div className="total">
@@ -47,13 +66,15 @@ class Dashboard extends React.Component {
                     <TitledValue title="Total Estimate" value={formatHours(this.props.estimateHours)} max={this.props.totalCapacity}/>
                     <TitledValue title="Total Capacity" value={formatHours(this.props.totalCapacity)}/>
                     <ProgressBar lines={[
-                        {current: this.props.spentHours, max: this.props.totalCapacity},
-                        {current: this.props.estimateHours, max: this.props.totalCapacity, className: 'progress-value-second'},
+                        {height: 10, current: this.props.spentHours, max: this.props.totalCapacity},
+                        {height: 10, current: this.props.estimateHours, max: this.props.totalCapacity, className: 'progress-value-second'},
+                        {height: 2, current: now - min, max: max - min, className: 'progress-value-third'},
                     ]} className="big-progress"/>
+                    <div className="refresh" onClick={() => this.refreshClick(this.props)}>
+                        <img className={['refresh-icon', this.state.refreshing ? 'refreshing' : ''].join(' ')} src="/resources/image/refresh.svg"/>
+                    </div>
                 </div>
                 <div className="toolbar">
-                    <a href="#" className="refresh" onClick={this.props.refresh}>Refresh</a>
-                    <br/>
                     Projects
                     <Select
                       value={this.props.filters.projects}
@@ -77,7 +98,7 @@ class Dashboard extends React.Component {
                     />
                 </div>
                 <div className="members">
-                    <MemberTable numberWidth="40" members={this.props.members} issues={this.props.issues}/>
+                    <MemberTable numberWidth="50" members={this.props.members} issues={this.props.issues}/>
                 </div>
             </div>
         );
