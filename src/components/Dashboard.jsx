@@ -10,6 +10,8 @@ import MemberTable from '../containers/MemberTable';
 import { formatHours } from '../utils';
 
 
+const flattenMilestones = (milestones) => [].concat.apply([], Object.values(milestones));
+
 class Dashboard extends React.Component {
     constructor(props) {
         super(props);
@@ -38,8 +40,8 @@ class Dashboard extends React.Component {
     }
 
     getMilestoneOptions() {
-        return [].concat.apply([], Object.values(this.props.milestones).map((milestones) =>
-            milestones
+        return (
+            flattenMilestones(this.props.milestones)
             .filter(milestone => (
                 !this.props.filters ||
                 !(this.props.filters.projects || []).length ||
@@ -48,27 +50,39 @@ class Dashboard extends React.Component {
                 let projectName = this.props.projects.filter((project) => project.id == milestone.project_id)[0].name;
                 return {value: milestone.id, label: `${projectName} - ${milestone.title}`}
             })
-        ));
+        );
     }
 
     getMemberOptions() {
         return this.props.allMembers.map((member) => {return {value: member.id, label: member.name}});
     }
 
+    getEdgeDate(key) {
+        return Math.max(...flattenMilestones(this.props.milestones).map((milestone) => new Date(milestone[key]).getTime()));
+    }
+
+    getStartDate() {
+        return this.getEdgeDate('start_date');
+    }
+
+    getDueDate() {
+        return this.getEdgeDate('due_date');
+    }
+
     render() {
         let now = Date.now(),
-            min = new Date('2017-04-05T00:00:00').getTime(),
-            max = new Date('2017-04-12T00:00:00').getTime(); // FIXME: get from milestones
+            minTime = this.getStartDate(),
+            maxTime = this.getDueDate();
         return (
             <div className="dashboard">
                 <div className="total">
-                    <TitledValue title="Total Hours" value={formatHours(this.props.spentHours)}/>
+                    <TitledValue title="Total Spent" value={formatHours(this.props.spentHours)}/>
                     <TitledValue title="Total Estimate" value={formatHours(this.props.estimateHours)} max={this.props.totalCapacity}/>
                     <TitledValue title="Total Capacity" value={formatHours(this.props.totalCapacity)}/>
                     <ProgressBar lines={[
                         {height: 10, current: this.props.spentHours, max: this.props.totalCapacity},
                         {height: 10, current: this.props.estimateHours, max: this.props.totalCapacity, className: 'progress-value-second'},
-                        {height: 2, current: now - min, max: max - min, className: 'progress-value-third'},
+                        {height: 2, current: now - minTime, max: maxTime - minTime, className: 'progress-value-third'},
                     ]} className="big-progress"/>
                     <div className="refresh" onClick={() => this.refreshClick(this.props)}>
                         <img className={['refresh-icon', this.state.refreshing ? 'refreshing' : ''].join(' ')} src="/resources/image/refresh.svg"/>
@@ -98,7 +112,7 @@ class Dashboard extends React.Component {
                     />
                 </div>
                 <div className="members">
-                    <MemberTable numberWidth="50" members={this.props.members} issues={this.props.issues}/>
+                    <MemberTable numberWidth="50" members={this.props.members} issues={this.props.issues} minTime={minTime} maxTime={maxTime}/>
                 </div>
             </div>
         );

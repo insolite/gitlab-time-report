@@ -8,16 +8,25 @@ const mapStateToProps = (state, props) => {
     let data,
         members = {};
     props.members.map((member) => {
-        let memberIssues = filterIssues(props.issues, {members: [member.id]});
+        let memberIssues = filterIssues(props.issues, {members: [member.id]}),
+            spent = sumSpentHours(memberIssues, state.issueTimes),
+            estimate = sumEstimateHours(memberIssues, state.issueTimes);
         members[member.id] = Object.assign({}, member, {
-            issues: memberIssues.map((issue) => Object.assign({}, issue, {
-                spentHours: sumSpentHours([issue], state.issueTimes),
-                estimateHours: sumEstimateHours([issue], state.issueTimes),
-            })),
-            spentHours: sumSpentHours(memberIssues, state.issueTimes),
-            estimateHours: sumEstimateHours(memberIssues, state.issueTimes),
+            issues: memberIssues.map((issue) => {
+                    let spent = sumSpentHours([issue], state.issueTimes),
+                        estimate = sumEstimateHours([issue], state.issueTimes);
+                    return Object.assign({}, issue, {
+                        spentHours: spent,
+                        estimateHours: estimate,
+                        overtime: spent > estimate ? spent - estimate : 0
+                    });
+                }
+            ),
+            spentHours: spent,
+            estimateHours: estimate,
+            capacity: member.capacity,
             count: memberIssues.length,
-            capacity: member.capacity
+            overtime: spent > estimate ? spent - estimate : 0
         });
     });
     data = Object.values(members);
