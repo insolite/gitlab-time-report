@@ -7,10 +7,8 @@ import 'react-select/dist/react-select.css';
 import TitledValue from './TitledValue';
 import ProgressBar from './ProgressBar';
 import MemberTable from '../containers/MemberTable';
-import { formatHours } from '../utils';
+import { formatHours, flattenObjects } from '../utils';
 
-
-const flattenMilestones = (milestones) => [].concat.apply([], Object.values(milestones));
 
 class Dashboard extends React.Component {
     constructor(props) {
@@ -41,7 +39,7 @@ class Dashboard extends React.Component {
 
     getMilestoneOptions() {
         return (
-            flattenMilestones(this.props.milestones)
+            flattenObjects(this.props.milestones)
             .filter(milestone => (
                 !this.props.filters ||
                 !(this.props.filters.projects || []).length ||
@@ -58,7 +56,7 @@ class Dashboard extends React.Component {
     }
 
     getEdgeDate(key) {
-        return Math.max(...flattenMilestones(this.props.milestones).map((milestone) => new Date(milestone[key]).getTime()));
+        return Math.max(...flattenObjects(this.props.milestones).map((milestone) => new Date(milestone[key]).getTime()));
     }
 
     getStartDate() {

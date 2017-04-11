@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import Dashboard from '../components/Dashboard';
-import { filterIssues, sumSpentHours, sumEstimateHours } from '../utils';
+import { filterIssues, sumSpentHours, sumEstimateHours, flattenObjects } from '../utils';
 import { fetchIssues } from '../actions/issue';
 import { fetchIssueTime } from '../actions/issueTime';
 import { fetchMembers } from '../actions/member';
@@ -11,7 +11,7 @@ import { setFilters } from '../actions/filters';
 
 
 const mapStateToProps = (state) => {
-    let issues = filterIssues(state.issues, state.filters),
+    let issues = filterIssues(flattenObjects(state.issues), state.filters),
         allMembers = state.members,
         members = allMembers.filter(member => !state.filters || !(state.filters.members || []).length || state.filters.members.indexOf(member.id) >= 0);
     return {
@@ -40,20 +40,19 @@ const getFilters = items => {
 const mapDispatchToProps = (dispatch) => {
     return {
         refresh: () => {
-            let issues = dispatch(fetchIssues()),
-                members = dispatch(fetchMembers()),
+            let members = dispatch(fetchMembers()),
                 projects = dispatch(fetchProjects());
-            issues.then((action) => {
-                action.payload.map((issue) => {
-                    dispatch(fetchIssueTime(issue.project_id, issue.iid));
-                });
-            });
             projects.then((action) => {
                 action.payload.map((project) => {
+                    dispatch(fetchIssues(project.id)).then((action) => {
+                        action.payload.map((issue) => {
+                            dispatch(fetchIssueTime(issue.project_id, issue.iid));
+                        });
+                    });
                     dispatch(fetchMilestones(project.id));
                 });
             });
-            return [issues, members, projects]; // TODO: add inner promises (issue time, milestones) somehow
+            return [members, projects]; // TODO: add inner promises (issue time, milestones) somehow
         },
         filterProjects: (projects) => {
             dispatch(setFilters(getFilters({projects})));

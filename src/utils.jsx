@@ -29,3 +29,5 @@ export const sumSpentHours = (issues, times) => getHours(issues.map((issue) => t
 export const sumEstimateHours = (issues, times) => getHours(issues.map((issue) => times[issue.id] ? times[issue.id].time_estimate : 0).reduce((a, b) => a + b, 0));
 
 export const getGitlabUrl = (path, queryStr) => `${GITLAB_URL}/api/v4${path}?private_token=${PRIVATE_TOKEN}` + (queryStr ? `&${queryStr}` : '');
+
+export const flattenObjects = (objects) => [].concat.apply([], Object.values(objects));

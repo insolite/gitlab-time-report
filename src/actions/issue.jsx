@@ -7,14 +7,21 @@ export const ISSUES_REQUEST = 'ISSUES_REQUEST';
 export const ISSUES_RECEIVE = 'ISSUES_RECEIVE';
 export const ISSUES_FAILURE = 'ISSUES_FAILURE';
 
-export function fetchIssues() {
+export function fetchIssues(projectId) {
   return {
     [CALL_API]: {
-      endpoint: getGitlabUrl('/issues'),
+      endpoint: getGitlabUrl(`/projects/${projectId}/issues`),
       method: 'GET',
       types: [
         ISSUES_REQUEST,
-        ISSUES_RECEIVE,
+        {
+          type: ISSUES_RECEIVE,
+          meta: () => {
+            return {
+              projectId
+            }
+          }
+        },
         ISSUES_FAILURE
       ]
     }
