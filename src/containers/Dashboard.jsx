@@ -39,17 +39,19 @@ const getFilters = items => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        refresh: () => {
+        refresh: (projectIds) => {
             let members = dispatch(fetchMembers()),
                 projects = dispatch(fetchProjects());
             projects.then((action) => {
                 action.payload.map((project) => {
-                    dispatch(fetchIssues(project.id)).then((action) => {
-                        action.payload.map((issue) => {
-                            dispatch(fetchIssueTime(issue.project_id, issue.iid));
+                    if (!projectIds || projectIds.indexOf(project.id) >= 0) {
+                        dispatch(fetchIssues(project.id)).then((action) => {
+                            action.payload.map((issue) => {
+                                dispatch(fetchIssueTime(issue.project_id, issue.iid));
+                            });
                         });
-                    });
-                    dispatch(fetchMilestones(project.id));
+                        dispatch(fetchMilestones(project.id));
+                    }
                 });
             });
             return [members, projects]; // TODO: add inner promises (issue time, milestones) somehow

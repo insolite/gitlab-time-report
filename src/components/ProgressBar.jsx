@@ -10,7 +10,7 @@ class ProgressBar extends React.Component {
             <div className={['progress-bar', this.props.className].join(' ')}>
                 {lines.map((line) =>
                     <div className={['value', line.className].join(' ')} style={{
-                        width: (line.current !== undefined && line.max !== undefined ? 100 * line.current / line.max : line.value) + '%',
+                        width: (line.current !== undefined && line.max !== undefined ? 100 * (line.max == 0 ? 1 : line.current / line.max) : line.value) + '%',
                         height: (100 * (line.height || defaultHeight) / totalHeight) + '%'
                     }}></div>
                 )}

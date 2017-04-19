@@ -10,7 +10,7 @@ export const MILESTONE_FAILURE = 'MILESTONE_FAILURE';
 export function fetchMilestones(projectId) {
   return {
     [CALL_API]: {
-      endpoint: getGitlabUrl(`/projects/${projectId}/milestones`),
+      endpoint: getGitlabUrl(`/projects/${projectId}/milestones`, 'per_page=100'),
       method: 'GET',
       types: [
         MILESTONE_REQUEST,

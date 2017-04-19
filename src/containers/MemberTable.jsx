@@ -16,6 +16,7 @@ const mapStateToProps = (state, props) => {
                     let spent = sumSpentHours([issue], state.issueTimes),
                         estimate = sumEstimateHours([issue], state.issueTimes);
                     return Object.assign({}, issue, {
+                        state: issue.state,
                         spentHours: spent,
                         estimateHours: estimate,
                         overtime: spent > estimate ? spent - estimate : 0

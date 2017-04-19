@@ -10,7 +10,7 @@ export const MEMBERS_FAILURE = 'MEMBERS_FAILURE';
 export function fetchMembers() {
   return {
     [CALL_API]: {
-      endpoint: getGitlabUrl('/users', 'active=true&blocked=false'),
+      endpoint: getGitlabUrl('/users', 'active=true&blocked=false&per_page=100'),
       method: 'GET',
       types: [
         MEMBERS_REQUEST,

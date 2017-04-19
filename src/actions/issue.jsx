@@ -10,7 +10,7 @@ export const ISSUES_FAILURE = 'ISSUES_FAILURE';
 export function fetchIssues(projectId) {
   return {
     [CALL_API]: {
-      endpoint: getGitlabUrl(`/projects/${projectId}/issues`),
+      endpoint: getGitlabUrl(`/projects/${projectId}/issues`, 'per_page=100'),
       method: 'GET',
       types: [
         ISSUES_REQUEST,

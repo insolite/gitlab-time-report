@@ -12,11 +12,15 @@ const issueLinkFormatter = (cell, row) => {
 };
 
 const avatarFormatter = (cell, row) => {
-    return <img src={row.avatar_url} className="avatar"/>;
+    return <img src={cell} className="avatar"/>;
 };
 
 const issueProgressFormatter = (cell, row) => {
     return <ProgressBar lines={{current: row.spentHours, max: row.estimateHours}} className="issue-progress"/>;
+};
+
+const stateFormatter = (cell, row) => {
+    return <div className={['issue-state', `issue-state-${cell}`].join(' ')}>{cell}</div>;
 };
 
 class MemberTable extends React.Component {
@@ -36,8 +40,9 @@ class MemberTable extends React.Component {
         return (
             <BootstrapTable data={row.issues}
                             trClassName="issue">
-                <TableHeaderColumn dataField='id' dataFormat={ issueLinkFormatter } width="45" dataSort isKey>ID</TableHeaderColumn>
-                <TableHeaderColumn dataField='title' width="500" dataSort>Title</TableHeaderColumn>
+                <TableHeaderColumn dataField='iid' dataFormat={ issueLinkFormatter } width="45" dataSort isKey>ID</TableHeaderColumn>
+                <TableHeaderColumn dataField='title' width="420" dataSort>Title</TableHeaderColumn>
+                <TableHeaderColumn dataField='state' dataFormat={stateFormatter} width="80" dataSort>State</TableHeaderColumn>
                 <TableHeaderColumn dataField='spentHours' dataFormat={hoursFormatter} width={this.props.numberWidth} dataSort>Spent</TableHeaderColumn>
                 <TableHeaderColumn dataField='estimateHours' dataFormat={hoursFormatter} width={this.props.numberWidth} dataSort>Estimate</TableHeaderColumn>
                 <TableHeaderColumn dataField='capacity' dataFormat={hoursFormatter} width={this.props.numberWidth} dataSort>Capacity</TableHeaderColumn>
@@ -57,7 +62,7 @@ class MemberTable extends React.Component {
                                 expandableRow={() => true}
                                 options={{expanding: this.props.data.map((member) => member.name)}}
                                 search>
-                    <TableHeaderColumn dataFormat={ avatarFormatter } width="35">I</TableHeaderColumn>
+                    <TableHeaderColumn dataField='avatar_url' dataFormat={ avatarFormatter } width="35"></TableHeaderColumn>
                     <TableHeaderColumn dataField='name' width="510" dataSort isKey>Name</TableHeaderColumn>
                     <TableHeaderColumn dataField='spentHours' dataFormat={hoursFormatter} width={this.props.numberWidth} dataSort>S</TableHeaderColumn>
                     <TableHeaderColumn dataField='estimateHours' dataFormat={hoursFormatter} width={this.props.numberWidth} dataSort>E</TableHeaderColumn>

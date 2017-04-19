@@ -93,9 +93,9 @@
         background: #eee;
       }
       .refresh-icon {
-        padding: 4px;
-        width: 20px;
-        height: 20px;
+        padding: 2px;
+        width: 24px;
+        height: 24px;
         display: block;
         transform: rotate(0deg);
         &.refreshing {
@@ -151,6 +151,19 @@
           .issue-progress {
             width: calc(100% - 24px - 35px);
             margin: 4px 0 0 calc(35px + 4px);
+          }
+          .issue-state {
+            padding-left: 6px;
+            border-radius: 4px;
+            &.issue-state-opened {
+              background: #d2d7ff;
+            }
+            &.issue-state-reopened {
+              background: #fff9d2;
+            }
+            &.issue-state-closed {
+              background: #d5ffd2;
+            }
           }
         }
       }
