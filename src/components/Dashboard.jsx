@@ -66,6 +66,7 @@ class Dashboard extends React.Component {
         );
     }
 
+    getStartDate() {
         return this.getEdgeDate('start_date', Math.min);
     }
 
