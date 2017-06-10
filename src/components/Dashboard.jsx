@@ -55,16 +55,22 @@ class Dashboard extends React.Component {
         return this.props.allMembers.map((member) => {return {value: member.id, label: member.name}});
     }
 
-    getEdgeDate(key) {
-        return Math.max(...flattenObjects(this.props.milestones).map((milestone) => new Date(milestone[key]).getTime()));
+    getEdgeDate(key, func) {
+        return func(...
+            flattenObjects(this.props.milestones)
+            .filter(milestone => (
+                !this.props.filters ||
+                !(this.props.filters.milestones || []).length ||
+                (this.props.filters.milestones || []).indexOf(milestone.id) >= 0))
+            .map((milestone) => new Date(milestone[key]).getTime())
+        );
     }
 
-    getStartDate() {
-        return this.getEdgeDate('start_date');
+        return this.getEdgeDate('start_date', Math.min);
     }
 
     getDueDate() {
-        return this.getEdgeDate('due_date');
+        return this.getEdgeDate('due_date', Math.max);
     }
 
     render() {
