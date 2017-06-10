@@ -23,6 +23,16 @@ const stateFormatter = (cell, row) => {
     return <div className={['issue-state', `issue-state-${cell}`].join(' ')}>{cell}</div>;
 };
 
+const openCountFormatter = (cell, row) => {
+    let colors = {
+        0: '#fdddff',
+        1: '#d5ffd2',
+        2: '#ffe1aa',
+        3: '#ffd2d2',
+    };
+    return <div title={`${cell} open issues`} className='member-state' style={{background: colors[cell] || '#ffa0a0'}}>{cell}</div>;
+};
+
 class MemberTable extends React.Component {
 
     memberProgressFormatter(cell, row) {
@@ -63,7 +73,8 @@ class MemberTable extends React.Component {
                                 options={{expanding: this.props.data.map((member) => member.name)}}
                                 search>
                     <TableHeaderColumn dataField='avatar_url' dataFormat={ avatarFormatter } width="35"></TableHeaderColumn>
-                    <TableHeaderColumn dataField='name' width="510" dataSort isKey>Name</TableHeaderColumn>
+                    <TableHeaderColumn dataField='name' width="430" dataSort isKey>Name</TableHeaderColumn>
+                    <TableHeaderColumn dataField='openCount' dataFormat={openCountFormatter} width="80" dataSort>L</TableHeaderColumn>
                     <TableHeaderColumn dataField='spentHours' dataFormat={hoursFormatter} width={this.props.numberWidth} dataSort>S</TableHeaderColumn>
                     <TableHeaderColumn dataField='estimateHours' dataFormat={hoursFormatter} width={this.props.numberWidth} dataSort>E</TableHeaderColumn>
                     <TableHeaderColumn dataField='capacity' dataFormat={hoursFormatter} width={this.props.numberWidth} dataSort>C</TableHeaderColumn>

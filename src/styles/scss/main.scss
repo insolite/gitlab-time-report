@@ -137,6 +137,13 @@
           height: 24px;
           margin: 4px 4px 0 4px;
         }
+        .member-state {
+          width: 30px;
+          border-radius: 3px;
+          box-sizing: border-box;
+          text-align: center;
+          margin-left: 20px;
+        }
         .member-progress {
           width: calc(100% - 24px);
           height: 20px;

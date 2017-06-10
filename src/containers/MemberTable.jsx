@@ -19,7 +19,7 @@ const mapStateToProps = (state, props) => {
                         state: issue.state,
                         spentHours: spent,
                         estimateHours: estimate,
-                        overtime: spent > estimate ? spent - estimate : 0
+                        overtime: Math.max(spent - estimate, 0)
                     });
                 }
             ),
@@ -27,7 +27,10 @@ const mapStateToProps = (state, props) => {
             estimateHours: estimate,
             capacity: member.capacity,
             count: memberIssues.length,
-            overtime: spent > estimate ? spent - estimate : 0
+            openCount: memberIssues.filter((issue) => issue.state != 'closed').length,
+            overtime: memberIssues
+                .map((issue) => Math.max(sumSpentHours([issue], state.issueTimes) - sumEstimateHours([issue], state.issueTimes), 0))
+                .reduce((a, b) => a + b, 0)
         });
     });
     data = Object.values(members);
