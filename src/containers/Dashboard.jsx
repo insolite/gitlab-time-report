@@ -22,25 +22,26 @@ class Dashboard extends React.Component {
         super(props);
 
         this.state = {
-            refreshing: true,
+            refreshing: false,
         };
+    }
 
-        this.refresh(props, false);
+    componentWillMount() {
+        this.refresh();
     }
 
     shouldComponentUpdate(np, ns) {
         return this.state.refreshing != ns.refreshing || !ns.refreshing;
     }
 
-    refresh(props, initIcon=true) {
-        if (initIcon) {
-            this.setState({
-                refreshing: true
-            });
-        }
-        props.refresh(undefined, () => this.setState({
-            refreshing: false
-        }));
+    refresh() {
+        this.setState({
+            refreshing: true
+        }, () => {
+            this.props.refresh(undefined, () => this.setState({
+                refreshing: false
+            }));
+        });
     }
 
     getProjectOptions() {
@@ -183,13 +184,11 @@ export default connect(
                     Promise.all(projectPromises).then(issuePromises => {
                         Promise.all(issuePromises.map(result => result[0])).then(issueTimePromises => {
                             Promise.all(issueTimePromises.reduce((a, b) => a.concat(b), [])).then(() => {
-                                console.log(1);
                                 callback();
                             });
                         });
                     });
                 });
-                return [members, projects]; // TODO: add inner promises (issue time, milestones) somehow
             },
             filterProjects: (projects) => {
                 dispatch(setFilters(getFilters({projects})));
