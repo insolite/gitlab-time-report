@@ -129,9 +129,6 @@
       }
       .member {
         font-size: 18px;
-        .table-header-wrapper {
-          display: none;
-        }
         .avatar {
           width: 24px;
           height: 24px;
@@ -149,28 +146,31 @@
           height: 20px;
           margin: 4px 0 0 4px;
         }
-        .issue {
-          font-size: 16px;
-          .link {
-            text-align: right;
-            display: block;
+      }
+      .issues-header {
+        display: none;
+      }
+      .issue {
+        font-size: 16px;
+        .link {
+          text-align: right;
+          display: block;
+        }
+        .issue-progress {
+          width: calc(100% - 24px - 35px);
+          margin: 4px 0 0 calc(35px + 4px);
+        }
+        .issue-state {
+          padding-left: 6px;
+          border-radius: 4px;
+          &.issue-state-opened {
+            background: #d2d7ff;
           }
-          .issue-progress {
-            width: calc(100% - 24px - 35px);
-            margin: 4px 0 0 calc(35px + 4px);
+          &.issue-state-reopened {
+            background: #fff9d2;
           }
-          .issue-state {
-            padding-left: 6px;
-            border-radius: 4px;
-            &.issue-state-opened {
-              background: #d2d7ff;
-            }
-            &.issue-state-reopened {
-              background: #fff9d2;
-            }
-            &.issue-state-closed {
-              background: #d5ffd2;
-            }
+          &.issue-state-closed {
+            background: #d5ffd2;
           }
         }
       }

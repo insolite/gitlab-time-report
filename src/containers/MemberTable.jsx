@@ -17,7 +17,11 @@ const avatarFormatter = (cell, row) => {
 };
 
 const issueProgressFormatter = (cell, row) => {
-    return <ProgressBar lines={{current: row.spentHours, max: row.estimateHours}} className="issue-progress"/>;
+    return (
+        <ProgressBar lines={{current: row.spentHours, max: row.estimateHours}}
+                     className="issue-progress"
+        />
+    );
 };
 
 const stateFormatter = (cell, row) => {
@@ -31,59 +35,156 @@ const openCountFormatter = (cell, row) => {
         2: '#ffe1aa',
         3: '#ffd2d2',
     };
-    return <div title={`${cell} open issues`} className='member-state' style={{background: colors[cell] || '#ffa0a0'}}>{cell}</div>;
+    return (
+        <div title={`${cell} open issues`}
+             className='member-state'
+             style={{background: colors[cell] || '#ffa0a0'}}
+        >
+            {cell}
+        </div>
+    );
 };
 
 class MemberTable extends React.Component {
-
     memberProgressFormatter(cell, row) {
         let now = Date.now(),
             minTime = this.props.minTime,
             maxTime = this.props.maxTime;
-        return <ProgressBar lines={[
-            {height: 10, current: row.spentHours, max: row.capacity},
-            {height: 10, current: row.estimateHours, max: row.capacity, className: 'progress-value-second'},
-            {height: 2, current: now - minTime, max: maxTime - minTime, className: 'progress-value-third'},
-        ]} className="member-progress"/>;
+        return (
+            <ProgressBar
+                lines={[
+                    {
+                        height: 10,
+                        current: row.spentHours,
+                        max: row.capacity
+                    },
+                    {
+                        height: 10,
+                        current: row.estimateHours,
+                        max: row.capacity,
+                        className: 'progress-value-second'
+                    },
+                    {
+                        height: 2,
+                        current: now - minTime,
+                        max: maxTime - minTime,
+                        className: 'progress-value-third'
+                    },
+                ]}
+                className="member-progress"
+            />
+        );
     };
 
     expandComponent(row) {
         return (
             <BootstrapTable data={row.issues}
-                            trClassName="issue">
-                <TableHeaderColumn dataField='iid' dataFormat={ issueLinkFormatter } width="45" dataSort isKey>ID</TableHeaderColumn>
-                <TableHeaderColumn dataField='title' width="420" dataSort>Title</TableHeaderColumn>
-                <TableHeaderColumn dataField='state' dataFormat={stateFormatter} width="80" dataSort>State</TableHeaderColumn>
-                <TableHeaderColumn dataField='spentHours' dataFormat={hoursFormatter} width={this.props.numberWidth} dataSort>Spent</TableHeaderColumn>
-                <TableHeaderColumn dataField='estimateHours' dataFormat={hoursFormatter} width={this.props.numberWidth} dataSort>Estimate</TableHeaderColumn>
-                <TableHeaderColumn dataField='capacity' dataFormat={hoursFormatter} width={this.props.numberWidth} dataSort>Capacity</TableHeaderColumn>
-                <TableHeaderColumn dataField='count' width={this.props.numberWidth} dataSort>Count</TableHeaderColumn>
-                <TableHeaderColumn dataFormat={ issueProgressFormatter } width="228">Progress</TableHeaderColumn>
-                <TableHeaderColumn dataField='overtime' dataFormat={hoursFormatter} width={this.props.numberWidth} dataSort>O</TableHeaderColumn>
+                            trClassName="issue"
+                            tableHeaderClass="issues-header"
+            >
+                <TableHeaderColumn
+                    dataField='iid'
+                    dataFormat={issueLinkFormatter}
+                    width="45" dataSort
+                    isKey>ID</TableHeaderColumn>
+                <TableHeaderColumn
+                    dataField='title'
+                    width="420"
+                    dataSort>Title</TableHeaderColumn>
+                <TableHeaderColumn
+                    dataField='state'
+                    dataFormat={stateFormatter}
+                    width="80"
+                    dataSort>State</TableHeaderColumn>
+                <TableHeaderColumn
+                    dataField='spentHours'
+                    dataFormat={hoursFormatter}
+                    width={this.props.numberWidth}
+                    dataSort>Spent</TableHeaderColumn>
+                <TableHeaderColumn
+                    dataField='estimateHours'
+                    dataFormat={hoursFormatter}
+                    width={this.props.numberWidth}
+                    dataSort>Estimate</TableHeaderColumn>
+                <TableHeaderColumn
+                    dataField='capacity'
+                    dataFormat={hoursFormatter}
+                    width={this.props.numberWidth}
+                    dataSort>Capacity</TableHeaderColumn>
+                <TableHeaderColumn
+                    dataField='count'
+                    width={this.props.numberWidth}
+                    dataSort>Count</TableHeaderColumn>
+                <TableHeaderColumn
+                    dataFormat={ issueProgressFormatter }
+                    width="228">Progress</TableHeaderColumn>
+                <TableHeaderColumn
+                    dataField='overtime'
+                    dataFormat={hoursFormatter}
+                    width={this.props.numberWidth}
+                    dataSort>O</TableHeaderColumn>
             </BootstrapTable>
         );
     }
 
     render() {
         return (
-            <div key={Date.now()}> {/* Because `expanding` option change does not affect DOM without rerender */}
-                <BootstrapTable data={this.props.data}
-                                trClassName="member"
-                                expandComponent={ (row) => this.expandComponent(row) }
-                                expandableRow={() => true}
-                                options={{expanding: this.props.data.map((member) => member.name)}}
-                                search>
-                    <TableHeaderColumn dataField='avatar_url' dataFormat={ avatarFormatter } width="35"></TableHeaderColumn>
-                    <TableHeaderColumn dataField='name' width="430" dataSort isKey>Name</TableHeaderColumn>
-                    <TableHeaderColumn dataField='openCount' dataFormat={openCountFormatter} width="80" dataSort>L</TableHeaderColumn>
-                    <TableHeaderColumn dataField='spentHours' dataFormat={hoursFormatter} width={this.props.numberWidth} dataSort>S</TableHeaderColumn>
-                    <TableHeaderColumn dataField='estimateHours' dataFormat={hoursFormatter} width={this.props.numberWidth} dataSort>E</TableHeaderColumn>
-                    <TableHeaderColumn dataField='capacity' dataFormat={hoursFormatter} width={this.props.numberWidth} dataSort>C</TableHeaderColumn>
-                    <TableHeaderColumn dataField='count' width={this.props.numberWidth} dataSort>N</TableHeaderColumn>
-                    <TableHeaderColumn dataFormat={(cell, row) => this.memberProgressFormatter(cell, row)} width="228">Progress</TableHeaderColumn>
-                    <TableHeaderColumn dataField='overtime' dataFormat={hoursFormatter} width={this.props.numberWidth} dataSort>O</TableHeaderColumn>
-                </BootstrapTable>
-            </div>
+            <BootstrapTable data={this.props.data}
+                            trClassName="member"
+                            expandComponent={row => this.expandComponent(row)}
+                            expandableRow={() => true}
+                            options={{expanding: this.props.data.map((member) => member.name)}}
+                            search>
+                <TableHeaderColumn dataField='avatar_url'
+                                   dataFormat={ avatarFormatter }
+                                   width="35"
+                />
+                <TableHeaderColumn dataField='name'
+                                   width="430"
+                                   dataSort
+                                   isKey
+                                   headerText="Name"
+                >Name</TableHeaderColumn>
+                <TableHeaderColumn dataField='openCount'
+                                   dataFormat={openCountFormatter}
+                                   width="80"
+                                   dataSort
+                                   headerText="Load"
+                >L</TableHeaderColumn>
+                <TableHeaderColumn dataField='spentHours'
+                                   dataFormat={hoursFormatter}
+                                   width={this.props.numberWidth}
+                                   dataSort
+                                   headerText="Spent"
+                >S</TableHeaderColumn>
+                <TableHeaderColumn dataField='estimateHours'
+                                   dataFormat={hoursFormatter}
+                                   width={this.props.numberWidth}
+                                   dataSort
+                                   headerText="Estimate"
+                >E</TableHeaderColumn>
+                <TableHeaderColumn dataField='capacity'
+                                   dataFormat={hoursFormatter}
+                                   width={this.props.numberWidth}
+                                   dataSort
+                                   headerText="Capacity"
+                >C</TableHeaderColumn>
+                <TableHeaderColumn dataField='count'
+                                   width={this.props.numberWidth}
+                                   dataSort
+                                   headerText="Count"
+                >N</TableHeaderColumn>
+                <TableHeaderColumn dataFormat={(cell, row) => this.memberProgressFormatter(cell, row)}
+                                   width="228"
+                                   headerText="Progress"
+                >Progress</TableHeaderColumn>
+                <TableHeaderColumn dataField='overtime'
+                                   dataFormat={hoursFormatter}
+                                   width={this.props.numberWidth}
+                                   dataSort
+                                   headerText="Overtime"
+                >O</TableHeaderColumn>
+            </BootstrapTable>
         );
     }
 }
