@@ -28,14 +28,17 @@ class Dashboard extends React.Component {
         this.refresh(props, false);
     }
 
+    shouldComponentUpdate(np, ns) {
+        return this.state.refreshing != ns.refreshing || !ns.refreshing;
+    }
+
     refresh(props, initIcon=true) {
         if (initIcon) {
             this.setState({
                 refreshing: true
             });
         }
-        let promises = props.refresh();
-        Promise.all(promises).then(() => this.setState({
+        props.refresh(undefined, () => this.setState({
             refreshing: false
         }));
     }
@@ -160,19 +163,30 @@ export default connect(
     },
     (dispatch) => {
         return {
-            refresh: (projectIds) => {
+            refresh: (projectIds, callback) => {
                 let members = dispatch(fetchMembers()),
                     projects = dispatch(fetchProjects());
                 projects.then((action) => {
-                    action.payload.map((project) => {
+                    return action.payload.map((project) => {
                         if (!projectIds || projectIds.indexOf(project.id) >= 0) {
-                            dispatch(fetchIssues(project.id)).then((action) => {
-                                action.payload.map((issue) => {
-                                    dispatch(fetchIssueTime(issue.project_id, issue.iid));
-                                });
-                            });
-                            dispatch(fetchMilestones(project.id));
+                            return Promise.all([
+                                dispatch(fetchIssues(project.id)).then((action) => {
+                                    return action.payload.map((issue) => {
+                                        return dispatch(fetchIssueTime(issue.project_id, issue.iid));
+                                    });
+                                }),
+                                dispatch(fetchMilestones(project.id)),
+                            ]);
                         }
+                    });
+                }).then(projectPromises => {
+                    Promise.all(projectPromises).then(issuePromises => {
+                        Promise.all(issuePromises.map(result => result[0])).then(issueTimePromises => {
+                            Promise.all(issueTimePromises.reduce((a, b) => a.concat(b), [])).then(() => {
+                                console.log(1);
+                                callback();
+                            });
+                        });
                     });
                 });
                 return [members, projects]; // TODO: add inner promises (issue time, milestones) somehow
