@@ -38,7 +38,7 @@ class Dashboard extends React.Component {
         this.setState({
             refreshing: true
         }, () => {
-            this.props.refresh(undefined, () => this.setState({
+            this.props.refresh((this.props.filters || {}).projects, () => this.setState({
                 refreshing: false
             }));
         });
@@ -100,7 +100,7 @@ class Dashboard extends React.Component {
                         {height: 10, current: this.props.estimateHours, max: this.props.totalCapacity, className: 'progress-value-second'},
                         {height: 2, current: now - minTime, max: maxTime - minTime, className: 'progress-value-third'},
                     ]} className="big-progress"/>
-                    <div className="refresh" onClick={() => this.refresh(this.props)}>
+                    <div className="refresh" onClick={() => this.refresh()}>
                         <img className={['refresh-icon', this.state.refreshing ? 'refreshing' : ''].join(' ')} src="/resources/image/refresh.svg"/>
                     </div>
                 </div>
@@ -168,17 +168,15 @@ export default connect(
                 let members = dispatch(fetchMembers()),
                     projects = dispatch(fetchProjects());
                 projects.then((action) => {
-                    return action.payload.map((project) => {
-                        if (!projectIds || projectIds.indexOf(project.id) >= 0) {
-                            return Promise.all([
-                                dispatch(fetchIssues(project.id)).then((action) => {
-                                    return action.payload.map((issue) => {
-                                        return dispatch(fetchIssueTime(issue.project_id, issue.iid));
-                                    });
-                                }),
-                                dispatch(fetchMilestones(project.id)),
-                            ]);
-                        }
+                    return action.payload.filter(project => !projectIds || projectIds.indexOf(project.id) >= 0).map((project) => {
+                        return Promise.all([
+                            dispatch(fetchIssues(project.id)).then((action) => {
+                                return action.payload.map((issue) => {
+                                    return dispatch(fetchIssueTime(issue.project_id, issue.iid));
+                                });
+                            }),
+                            dispatch(fetchMilestones(project.id)),
+                        ]);
                     });
                 }).then(projectPromises => {
                     Promise.all(projectPromises).then(issuePromises => {
