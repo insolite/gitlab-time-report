@@ -34,11 +34,11 @@ class Dashboard extends React.Component {
         return this.state.refreshing != ns.refreshing || !ns.refreshing;
     }
 
-    refresh() {
+    refresh(projects) { // (this.props.filters || {}).projects // To fetch only filtered projects
         this.setState({
             refreshing: true
         }, () => {
-            this.props.refresh((this.props.filters || {}).projects, () => this.setState({
+            this.props.refresh(projects, () => this.setState({
                 refreshing: false
             }));
         });
