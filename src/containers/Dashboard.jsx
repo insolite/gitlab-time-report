@@ -7,7 +7,6 @@ import 'react-select/dist/react-select.css';
 
 import { filterIssues, sumSpentHours, sumEstimateHours, flattenObjects, formatHours } from '../utils';
 import { fetchIssues, issuesSet } from '../actions/issue';
-import { fetchIssueTime, issueTimeSet } from '../actions/issueTime';
 import { fetchMembers, membersSet } from '../actions/member';
 import { fetchMilestones, milestonesSet } from '../actions/milestone';
 import { fetchProjects, projectsSet } from '../actions/project';
@@ -157,8 +156,8 @@ export default connect(
             milestones: state.milestones,
             projects: state.projects,
             filters: state.filters,
-            spentHours: sumSpentHours(issues, state.issueTimes),
-            estimateHours: sumEstimateHours(issues, state.issueTimes),
+            spentHours: sumSpentHours(issues),
+            estimateHours: sumEstimateHours(issues),
             totalCapacity: members.map(member => member.capacity).reduce((a, b) => a + b, 0)
         }
     },
@@ -170,15 +169,10 @@ export default connect(
                 });
                 dispatch(fetchProjects()).then(projects => {
                     dispatch(projectsSet(projects));
-                    return projects.filter(project => !projectIds || projectIds.indexOf(project.id) >= 0).map((project) => {
+                    return projects.filter(project => !projectIds || projectIds.indexOf(project.id) >= 0).map(project => {
                         return Promise.all([
                             dispatch(fetchIssues(project.id)).then(issues => {
                                 dispatch(issuesSet(project.id, issues));
-                                return issues.map((issue) => {
-                                    return dispatch(fetchIssueTime(issue.project_id, issue.iid)).then(issueTime => {
-                                        dispatch(issueTimeSet(issue.iid, issueTime));
-                                    });
-                                });
                             }),
                             dispatch(fetchMilestones(project.id)).then(milestones => {
                                 dispatch(milestonesSet(project.id, milestones));
@@ -188,9 +182,7 @@ export default connect(
                 }).then(projectPromises => {
                     Promise.all(projectPromises).then(issuePromises => {
                         Promise.all(issuePromises.map(result => result[0])).then(issueTimePromises => {
-                            Promise.all(issueTimePromises.reduce((a, b) => a.concat(b), [])).then(() => {
-                                callback();
-                            });
+                            callback();
                         });
                     });
                 });

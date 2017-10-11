@@ -24,10 +24,8 @@ export const filterIssues = (issues, filters) => {
 
 // TODO: 0 -> None
 // times[issue.id] ? times[issue.id].total_time_spent : 0
-export const sumSpentHours = (issues, times) => getHours(issues.map((issue) => times[issue.iid] ? times[issue.iid].total_time_spent : 0).reduce((a, b) => a + b, 0));
+export const sumSpentHours = (issues) => getHours(issues.map((issue) => issue.time_stats ? issue.time_stats.total_time_spent : 0).reduce((a, b) => a + b, 0));
 
-export const sumEstimateHours = (issues, times) => getHours(issues.map((issue) => times[issue.iid] ? times[issue.iid].time_estimate : 0).reduce((a, b) => a + b, 0));
-
-export const getGitlabUrl = (path, queryStr) => `${GITLAB_URL}/api/v4${path}?private_token=${GITLAB_TOKEN}` + (queryStr ? `&${queryStr}` : '');
+export const sumEstimateHours = (issues) => getHours(issues.map((issue) => issue.time_stats ? issue.time_stats.time_estimate : 0).reduce((a, b) => a + b, 0));
 
 export const flattenObjects = (objects) => [].concat.apply([], Object.values(objects));

@@ -195,12 +195,12 @@ export default connect(
             members = {};
         props.members.map((member) => {
             let memberIssues = filterIssues(props.issues, {members: [member.id]}),
-                spent = sumSpentHours(memberIssues, state.issueTimes),
-                estimate = sumEstimateHours(memberIssues, state.issueTimes);
+                spent = sumSpentHours(memberIssues),
+                estimate = sumEstimateHours(memberIssues);
             members[member.id] = Object.assign({}, member, {
                 issues: memberIssues.map((issue) => {
-                        let spent = sumSpentHours([issue], state.issueTimes),
-                            estimate = sumEstimateHours([issue], state.issueTimes);
+                        let spent = sumSpentHours([issue]),
+                            estimate = sumEstimateHours([issue]);
                         return Object.assign({}, issue, {
                             state: issue.state,
                             spentHours: spent,
@@ -215,15 +215,15 @@ export default connect(
                 count: memberIssues.length,
                 openCount: memberIssues.filter((issue) => issue.state != 'closed').length,
                 overtime: memberIssues
-                    .map((issue) => Math.max(sumSpentHours([issue], state.issueTimes) - sumEstimateHours([issue], state.issueTimes), 0))
+                    .map((issue) => Math.max(sumSpentHours([issue]) - sumEstimateHours([issue]), 0))
                     .reduce((a, b) => a + b, 0)
             });
         });
         data = Object.values(members);
         return {
             data: data,
-            spentHours: sumSpentHours(props.issues, state.issueTimes),
-            estimateHours: sumEstimateHours(props.issues, state.issueTimes),
+            spentHours: sumSpentHours(props.issues),
+            estimateHours: sumEstimateHours(props.issues),
         }
     },
 )(MemberTable);
