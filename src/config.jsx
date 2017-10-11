@@ -1,2 +1,3 @@
-export const GITLAB_URL = 'http://gitlab.localhost';
-export const PRIVATE_TOKEN = 'test';
+// Environment variables (see README and webpack.config.js)
+export const GITLAB_URL = __GITLAB_URL;
+export const GITLAB_TOKEN = __GITLAB_TOKEN;

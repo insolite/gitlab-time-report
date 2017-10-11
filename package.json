@@ -1,5 +1,19 @@
 {
+  "name": "gitlab-time-report",
+  "version": "0.1.0",
+  "description": "GitLab issue time stats report",
+  "repository": "https://github.com/insolite/gitlab-time-report",
+  "author": "Oleg Krasnikov",
+  "readme": "README.rst",
   "private": true,
+  "main": "lib",
+  "babel": {
+    "presets": [
+      "es2015",
+      "react",
+      "stage-2"
+    ]
+  },
   "engines": {
     "node": ">=5.0 <6",
     "npm": ">=3.3 <4"
@@ -14,22 +28,24 @@
     "redux-api-middleware": "1.0.2"
   },
   "devDependencies": {
-    "babel-cli": "^6.6.0",
-    "babel-loader": "^6.2.4",
-    "babel-plugin-transform-es2015-destructuring": "^6.23.0",
-    "babel-plugin-transform-object-rest-spread": "^6.23.0",
-    "babel-preset-es2015": "^6.6.0",
-    "babel-preset-react": "^6.5.0",
     "css-loader": "^0.28.0",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
     "gulp": "^3.9.1",
     "gulp-sass": "^3.1.0",
     "style-loader": "^0.16.1",
-    "webpack": "^2.2.1",
-    "webpack-dev-server": "^2.4.2"
+    "webpack": "^3.6.0",
+    "webpack-dev-server": "^2.8.2"
   },
   "scripts": {
-    "clean": "babel-node tools/run clean",
-    "build": "babel-node tools/run build",
+    "clean": "rm -rf ./lib",
+    "build": "webpack && gulp sass && cp -R ./src/resources ./lib",
+    "lib": "npm run clean && babel src -d lib",
+    "prepublish": "npm run lib",
     "start": "webpack-dev-server"
   }
 }
