@@ -4,7 +4,7 @@ import { gitlabRequest } from './gitlabApi';
 export const ISSUE_TIME_SET = 'ISSUE_TIME_SET';
 
 export function fetchIssueTime(projectId, issueId) {
-    return gitlabRequest(`/projects/${projectId}/issues/${issueId}/time_stats`);
+    return gitlabRequest(`/projects/${projectId}/issues/${issueId}/time_stats`, {}, false);
 }
 
 export function issueTimeSet(issueId, data) {
