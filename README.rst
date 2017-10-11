@@ -35,9 +35,9 @@ Setup development environment
         npm start
 
 
- - ``GITLAB_URL`` is the home page for your GitLab instance
- - ``GITLAB_TOKEN`` is an GitLab personal access token you got at previous step
- - ``LISTEN_HOST`` is ``localhost`` by default
- - ``LISTEN_PORT`` is ``3030`` by default
+   - ``GITLAB_URL`` is the home page for your GitLab instance
+   - ``GITLAB_TOKEN`` is an GitLab personal access token you got at previous step
+   - ``LISTEN_HOST`` is ``localhost`` by default
+   - ``LISTEN_PORT`` is ``3030`` by default
 
 #. Open http://localhost:3030/ in browser (for default ``LISTEN_HOST`` and ``LISTEN_PORT``)
