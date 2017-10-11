@@ -1,11 +1,11 @@
-import { ISSUES_RECEIVE } from '../actions/issue';
+import { ISSUES_SET } from '../actions/issue';
 
 
-let initialState = [];
+let initialState = {};
 
-export default function issues (state=initialState, action) {
-    if (action.type == ISSUES_RECEIVE) {
-        return {...state, [action.meta.projectId]: action.payload};
+export default function (state=initialState, action) {
+    if (action.type == ISSUES_SET) {
+        return {...state, [action.payload.projectId]: action.payload.data};
     }
     return state;
 };

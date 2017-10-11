@@ -1,11 +1,11 @@
-import { PROJECTS_RECEIVE } from '../actions/project';
+import { PROJECTS_SET } from '../actions/project';
 
 
 let initialState = [];
 
-export default function projects (state=initialState, action) {
-    if (action.type == PROJECTS_RECEIVE) {
-        return action.payload;
+export default function (state=initialState, action) {
+    if (action.type == PROJECTS_SET) {
+        return action.payload.data;
     }
     return state;
 };

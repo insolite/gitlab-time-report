@@ -6,11 +6,11 @@ import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 
 import { filterIssues, sumSpentHours, sumEstimateHours, flattenObjects, formatHours } from '../utils';
-import { fetchIssues } from '../actions/issue';
-import { fetchIssueTime } from '../actions/issueTime';
-import { fetchMembers } from '../actions/member';
-import { fetchMilestones } from '../actions/milestone';
-import { fetchProjects } from '../actions/project';
+import { fetchIssues, issuesSet } from '../actions/issue';
+import { fetchIssueTime, issueTimeSet } from '../actions/issueTime';
+import { fetchMembers, membersSet } from '../actions/member';
+import { fetchMilestones, milestonesSet } from '../actions/milestone';
+import { fetchProjects, projectsSet } from '../actions/project';
 import { setFilters } from '../actions/filters';
 import TitledValue from '../components/TitledValue';
 import ProgressBar from '../components/ProgressBar';
@@ -165,17 +165,24 @@ export default connect(
     (dispatch) => {
         return {
             refresh: (projectIds, callback) => {
-                let members = dispatch(fetchMembers()),
-                    projects = dispatch(fetchProjects());
-                projects.then((action) => {
-                    return action.payload.filter(project => !projectIds || projectIds.indexOf(project.id) >= 0).map((project) => {
+                dispatch(fetchMembers()).then(members => {
+                    dispatch(membersSet(members));
+                });
+                dispatch(fetchProjects()).then(projects => {
+                    dispatch(projectsSet(projects));
+                    return projects.filter(project => !projectIds || projectIds.indexOf(project.id) >= 0).map((project) => {
                         return Promise.all([
-                            dispatch(fetchIssues(project.id)).then((action) => {
-                                return action.payload.map((issue) => {
-                                    return dispatch(fetchIssueTime(issue.project_id, issue.iid));
+                            dispatch(fetchIssues(project.id)).then(issues => {
+                                dispatch(issuesSet(project.id, issues));
+                                return issues.map((issue) => {
+                                    return dispatch(fetchIssueTime(issue.project_id, issue.iid)).then(issueTime => {
+                                        dispatch(issueTimeSet(issue.iid, issueTime));
+                                    });
                                 });
                             }),
-                            dispatch(fetchMilestones(project.id)),
+                            dispatch(fetchMilestones(project.id)).then(milestones => {
+                                dispatch(milestonesSet(project.id, milestones));
+                            }),
                         ]);
                     });
                 }).then(projectPromises => {

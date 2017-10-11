@@ -1,11 +1,11 @@
-import { MILESTONE_RECEIVE } from '../actions/milestone';
+import { MILESTONES_SET } from '../actions/milestone';
 
 
-let initialState = [];
+let initialState = {};
 
-export default function milestones (state=initialState, action) {
-    if (action.type == MILESTONE_RECEIVE) {
-        return {...state, [action.meta.projectId]: action.payload};
+export default function (state=initialState, action) {
+    if (action.type == MILESTONES_SET) {
+        return {...state, [action.payload.projectId]: action.payload.data};
     }
     return state;
 };

@@ -1,22 +1,17 @@
-import { CALL_API } from 'redux-api-middleware';
-
-import { getGitlabUrl } from '../utils';
+import { gitlabRequest } from './gitlabApi';
 
 
-export const MEMBERS_REQUEST = 'MEMBERS_REQUEST';
-export const MEMBERS_RECEIVE = 'MEMBERS_RECEIVE';
-export const MEMBERS_FAILURE = 'MEMBERS_FAILURE';
+export const MEMBERS_SET = 'MEMBERS_SET';
 
 export function fetchMembers() {
-  return {
-    [CALL_API]: {
-      endpoint: getGitlabUrl('/users', 'active=true&blocked=false&per_page=100'),
-      method: 'GET',
-      types: [
-        MEMBERS_REQUEST,
-        MEMBERS_RECEIVE,
-        MEMBERS_FAILURE
-      ]
-    }
-  }
+    return gitlabRequest('/users', 'active=true&blocked=false');
+}
+
+export function membersSet(data) {
+    return {
+        type: MEMBERS_SET,
+        payload: {
+            data,
+        },
+    };
 }

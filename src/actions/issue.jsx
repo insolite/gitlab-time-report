@@ -1,29 +1,18 @@
-import { CALL_API } from 'redux-api-middleware';
-
-import { getGitlabUrl } from '../utils';
+import {gitlabRequest} from './gitlabApi';
 
 
-export const ISSUES_REQUEST = 'ISSUES_REQUEST';
-export const ISSUES_RECEIVE = 'ISSUES_RECEIVE';
-export const ISSUES_FAILURE = 'ISSUES_FAILURE';
+export const ISSUES_SET = 'ISSUES_SET';
 
 export function fetchIssues(projectId) {
-  return {
-    [CALL_API]: {
-      endpoint: getGitlabUrl(`/projects/${projectId}/issues`, 'per_page=100'),
-      method: 'GET',
-      types: [
-        ISSUES_REQUEST,
-        {
-          type: ISSUES_RECEIVE,
-          meta: () => {
-            return {
-              projectId
-            }
-          }
+    return gitlabRequest(`/projects/${projectId}/issues`);
+}
+
+export function issuesSet(projectId, data) {
+    return {
+        type: ISSUES_SET,
+        payload: {
+            projectId,
+            data,
         },
-        ISSUES_FAILURE
-      ]
-    }
-  }
+    };
 }

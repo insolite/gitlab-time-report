@@ -4,7 +4,6 @@ import issues from './issues';
 import issueTimes from './issueTimes';
 import members from './members';
 import filters from './filters';
-import labels from './labels';
 import milestones from './milestones';
 import projects from './projects';
 
@@ -14,9 +13,8 @@ let mainReducer = combineReducers({
     issueTimes,
     members,
     filters,
-    labels,
     milestones,
-    projects
+    projects,
 });
 
 export default mainReducer;
