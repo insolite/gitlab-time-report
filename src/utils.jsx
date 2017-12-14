@@ -1,4 +1,3 @@
-import { GITLAB_URL, GITLAB_TOKEN } from './config';
 
 
 export const getHours = (seconds) => seconds / 3600;
@@ -8,7 +7,7 @@ export const formatHours = (hours, empty='-') => hours !== undefined ? hours.toF
 export const filterIssues = (issues, filters) => {
     return issues.filter((issue) => {
         if (filters) {
-            if ((filters.members || []).length && (!issue.assignee || filters.members.indexOf(issue.assignee.id) < 0)) {
+            if ((filters.members || []).length && (filters.members.indexOf((issue.assignee || {id: null}).id) < 0)) {
                 return false;
             }
             if ((filters.projects || []).length && filters.projects.indexOf(issue.project_id) < 0) {
