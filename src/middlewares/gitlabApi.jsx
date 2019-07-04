@@ -4,7 +4,7 @@ import { ACTIONS } from '../actions/gitlabApi';
 const MAX_PER_PAGE = 100;
 
 function Deferred() {
-    var self = this;
+    let self = this;
     this.promise = new Promise((resolve, reject) => {
         self.resolve = resolve;
         self.reject = reject;
@@ -37,7 +37,7 @@ export const isApiAction = (action) => {
 };
 
 export const createGitlabApiMiddleware = (instanceUrl, accessToken) => {
-    return (store) => {
+    return (/*store*/) => {
         return (next) => {
             return (action) => {
                 if (!isApiAction(action)) {
@@ -47,7 +47,7 @@ export const createGitlabApiMiddleware = (instanceUrl, accessToken) => {
                 let result;
                 const { type: actionType, payload: actionPayload } = action;
 
-                if (actionType == ACTIONS.GITLAB_REQUEST) {
+                if (actionType === ACTIONS.GITLAB_REQUEST) {
                     const { url, args, paginated } = actionPayload;
                     result = fetchPart(`${instanceUrl}/api/v4/${url.replace(/^\/?/, '')}`, {
                         ...args,
