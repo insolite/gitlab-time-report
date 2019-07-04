@@ -32,7 +32,6 @@ jspm_packages
 
 # Optional npm cache directory
 .npm
-yarn.lock
 
 # Optional REPL history
 .node_repl_history
@@ -42,3 +41,10 @@ yarn.lock
 
 # Built css files
 *.css
+
+# Lock file
+yarn.lock
+
+# Builds
+/lib
+/src/index.js
