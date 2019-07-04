@@ -32,6 +32,7 @@ Setup development environment
 
         GITLAB_URL="http://gitlab.localhost" \
         GITLAB_TOKEN="personal_access_token" \
+        GITLAB_GROUP_ID=1234567 \
         yarn start
 
 

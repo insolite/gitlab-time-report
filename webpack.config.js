@@ -6,7 +6,8 @@ const
     LISTEN_HOST = env.LISTEN_HOST || 'localhost',
     LISTEN_PORT = env.LISTEN_PORT || 3030,
     GITLAB_URL = env.GITLAB_URL || 'localhost',
-    GITLAB_TOKEN = env.GITLAB_TOKEN || '';
+    GITLAB_TOKEN = env.GITLAB_TOKEN || '',
+    GITLAB_GROUP_ID = env.GITLAB_GROUP_ID || '';
 
 module.exports = {
     entry: './src',
@@ -47,7 +48,8 @@ module.exports = {
     plugins: [
         new webpack.DefinePlugin({
             __GITLAB_URL: JSON.stringify(GITLAB_URL),
-            __GITLAB_TOKEN: JSON.stringify(GITLAB_TOKEN)
+            __GITLAB_TOKEN: JSON.stringify(GITLAB_TOKEN),
+            __GITLAB_GROUP_ID: JSON.stringify(GITLAB_GROUP_ID)
         })
     ]
 };
