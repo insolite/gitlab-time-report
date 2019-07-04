@@ -15,7 +15,7 @@ Setup development environment
 
     .. code-block:: bash
 
-        npm i
+        yarn
 
 #. Build styles
 
@@ -32,7 +32,7 @@ Setup development environment
 
         GITLAB_URL="http://gitlab.localhost" \
         GITLAB_TOKEN="personal_access_token" \
-        npm start
+        yarn start
 
 
    - ``GITLAB_URL`` is the home page for your GitLab instance
