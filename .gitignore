@@ -41,3 +41,10 @@ jspm_packages
 
 # Built css files
 *.css
+
+# Lock file
+yarn.lock
+
+# Builds
+/lib
+/src/index.js

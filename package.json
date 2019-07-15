@@ -15,8 +15,8 @@
     ]
   },
   "engines": {
-    "node": ">=5.0 <6",
-    "npm": ">=3.3 <4"
+    "node": ">=5.0",
+    "npm": ">=3.3"
   },
   "dependencies": {
     "react": "15.6.1",
@@ -43,8 +43,8 @@
   "scripts": {
     "clean": "rm -rf ./lib",
     "build": "webpack && gulp sass && cp -R ./src/resources ./lib",
-    "lib": "npm run clean && babel src -d lib",
-    "prepublish": "npm run lib",
+    "lib": "yarn clean && babel src -d lib",
+    "prepublish": "yarn lib",
     "start": "webpack-dev-server"
   }
 }
